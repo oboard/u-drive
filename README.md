@@ -3,7 +3,7 @@
 # 优网盘
 
 通过优学院的账号密码登录，文件储存在优学院的资源库中
-
+![截图](screenshots/1.png)
 ## Setup
 
 Make sure to install the dependencies:
