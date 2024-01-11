@@ -5,6 +5,18 @@ import { presetIcons } from 'unocss'
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   devtools: { enabled: true },
+  app: {
+    head: {
+      viewport: 'width=device-width',
+      title: 'U-Drive',
+      link: [
+        {
+          rel: 'icon', type: 'image/svg+xml',
+          href: '/favicon.svg'
+        }
+      ],
+    }
+  },
   modules: [
     '@unocss/nuxt',
     "@nuxt/image"
