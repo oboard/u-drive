@@ -104,3 +104,30 @@ export interface FileInfo {
 //     "growth": 0,
 //     "isdelete": 0
 // }
+
+
+export interface UploadFileInfo {
+    title: string;
+    type: number;
+    status: number;
+    contentSize: number;
+    location?: string;
+    mimeType?: string;
+    isView: number;
+    remark2: number;
+    remark3: number;
+    parentId: number;
+}
+
+// {
+//     title: file.name,
+//     type: 1,
+//     status: 2,
+//     contentSize: file.size,
+//     location: url,
+//     mimeType: nodotsubfix,
+//     isView: 0,
+//     remark2: 1,
+//     remark3: 0,
+//     parentId: parentId,
+//   }

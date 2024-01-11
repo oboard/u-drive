@@ -7,7 +7,7 @@
         <div
           class="w-full navbar fixed z-10 bg-base-100 shadow shadow-gray-200 dark:shadow-gray-900"
         >
-          <div class="flex-none sm:hidden">
+          <div class="flex-none lg:hidden">
             <label for="my-drawer-3" class="btn btn-square btn-ghost">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -40,12 +40,12 @@
         <!-- Page content here -->
         <!-- 路由出口 -->
         <div class="w-full flex-1 overflow-y-scroll">
-          <div class="fixed w-64 min-h-screen bg-base-200 hidden sm:block border-r">
+          <div class="fixed w-64 min-h-screen bg-base-200 hidden lg:block border-r">
             <ul class="menu flex flex-col pt-20">
                 <Folder :folder="{ son: rootFolder.data.value }" class="bg-base-200"/>
             </ul>
           </div>
-          <div class="flex-1 mx-4 pt-18 sm:ml-64">
+          <div class="flex-1 mx-4 pt-18 lg:ml-64">
               <slot />
           </div>
         </div>
