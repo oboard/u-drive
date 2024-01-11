@@ -14,7 +14,11 @@
           'i-vscode-icons-video',
           'i-vscode-icons-audio',
           'i-vscode-icons-file-type-image',
-          'i-vscode-icons-document',
+          'i-vscode-icons-default-file',
+          'i-vscode-icons-file-type-zip',
+          'i-vscode-icons-default-file',
+          'i-vscode-icons-file-type-text',
+          'i-vscode-icons-default-file',
         ][item.contentType]
       "
     />
