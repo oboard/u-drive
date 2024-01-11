@@ -20,7 +20,7 @@
   </div>
   <div v-if="listInfo">
     <div v-for="item in listInfo.list" :key="item.contentId">
-      <FileItem :item="item" />
+      <FileItem :item="item" :reload="reload" :token="token.data.value" />
     </div>
   </div>
 </template>
@@ -85,7 +85,11 @@ async function getParentInfo() {
 }
 
 onMounted(async () => {
+  await reload();
+});
+
+async function reload() {
   parentInfo.value = await getParentInfo();
   listInfo.value = await getLists();
-});
+}
 </script>

@@ -1,9 +1,6 @@
 <template>
   <!-- 0.没有附件；1.本地上传；2超链接;3文件夹 -->
-  <NuxtLink
-    class="flex items-center space-x-4 p-4 border-b border-gray-200"
-    :to="item.type === 3 ? item.contentId.toString() : undefined"
-  >
+  <div class="flex items-center space-x-4 p-4 border-b border-gray-200">
     <!-- Display the icon -->
     <!-- 0：文件夹1：视频2：音频3：图片4：文档5：压缩文件6：其他7：超链接8：图文9:微课 ,10:课件11:试题12:试卷13：虚拟仿真 14:优学院微课 -->
     <div
@@ -25,7 +22,11 @@
 
     <!-- Display file information -->
     <div class="flex-1">
-      <div class="">{{ item.title }}</div>
+      <NuxtLink
+        class="link link-neutral link-hover"
+        :to="item.type === 3 ? item.contentId.toString() : undefined"
+        >{{ item.title }}</NuxtLink
+      >
       <div v-if="item.type === 1" class="text-gray-500 text-sm">
         {{ item.remark }}
       </div>
@@ -36,7 +37,7 @@
     </div>
 
     <!-- actions -->
-    <div v-if="item.type === 1">
+    <div>
       <div class="dropdown dropdown-bottom dropdown-end block sm:hidden">
         <div tabindex="0" role="button" class="btn p-0 btn-circle">
           <i class="i-carbon-overflow-menu-horizontal w-6 h-6" />
@@ -47,6 +48,7 @@
         >
           <li v-for="action in actions" :key="action.name">
             <a
+              v-if="!action.showTypes || action.showTypes.includes(item.type)"
               tabindex="0"
               role="button"
               :class="action.class"
@@ -76,7 +78,7 @@
       </div>
     </div>
     <!-- {{ item }} -->
-  </NuxtLink>
+  </div>
 </template>
 
 <script lang="ts" setup>
@@ -87,12 +89,21 @@ const props = defineProps({
     type: Object as PropType<FileInfo>,
     required: true,
   },
+  token: {
+    type: String as PropType<string>,
+    required: true,
+  },
+  reload: {
+    type: Function as PropType<() => void>,
+    required: true,
+  },
 });
 
 const actions = [
   {
     name: "下载",
     icon: "i-tabler-download",
+    showTypes: [1],
     class: "",
     action: () => {
       // 下载 item.location 中的文件
@@ -100,11 +111,50 @@ const actions = [
     },
   },
   {
+    name: "重命名",
+    icon: "i-tabler-edit",
+    class: "",
+    action: () => {
+      // 重命名
+      const newName = prompt("请输入新的文件名", props.item.title);
+      if (newName) {
+        props.item.title = newName;
+        fetch("https://courseapi.ulearning.cn/course/content/upload?lang=zh", {
+          headers: {
+            "Content-Type": "application/json",
+            Referer: "https://courseweb.ulearning.cn/ulearning/index.html",
+            Authorization: props.token,
+          },
+          body: JSON.stringify(props.item),
+
+          method: "POST",
+        }).then(() =>
+          // 重新获取文件夹信息
+          props.reload()
+        );
+      }
+    },
+  },
+  {
     name: "删除",
     icon: "i-tabler-trash",
     class: "text-red-500 hover:text-red-800",
     action: () => {
-      console.log("删除");
+      fetch(
+        "https://courseapi.ulearning.cn/content/delete?_method=DELETE&lang=zh",
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Referer: "https://courseweb.ulearning.cn/ulearning/index.html",
+            Authorization: props.token,
+          },
+          body: JSON.stringify([props.item.contentId]),
+          method: "DELETE",
+        }
+      ).then(() =>
+        // 重新获取文件夹信息
+        props.reload()
+      );
     },
   },
 ];
