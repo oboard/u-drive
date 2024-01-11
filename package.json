@@ -15,6 +15,7 @@
     "@iconify-json/vscode-icons": "^1.1.32",
     "@nuxt/devtools": "latest",
     "@nuxt/image": "^1.1.0",
+    "@types/crypto-js": "^4.2.1",
     "@unocss/core": "latest",
     "@unocss/nuxt": "latest",
     "@unocss/reset": "latest",
@@ -25,6 +26,7 @@
     "vue-router": "^4.2.5"
   },
   "dependencies": {
-    "crypto-js": "^4.2.0"
+    "crypto-js": "^4.2.0",
+    "esdk-obs-browserjs": "^3.23.5"
   }
 }
