@@ -17,6 +17,19 @@ export default defineNuxtConfig({
       ],
     }
   },
+  nitro: {
+    // 该配置用于服务端请求转发
+    routeRules: {
+      // Cached for 1 hour
+      '/api/*': {
+        // cache: { maxAge: 1 }
+        cache: { maxAge: 60 * 60 }
+      },
+      '/proxy/https://**': {
+        proxy: 'https://**'
+      },
+    }
+  },
   modules: [
     '@unocss/nuxt',
     "@nuxt/image"

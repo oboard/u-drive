@@ -1,6 +1,6 @@
 <template>
   <!-- 0.没有附件；1.本地上传；2超链接;3文件夹 -->
-  <div class="flex items-center space-x-4 p-4 border-b border-gray-200">
+  <div class="flex items-center space-x-4 p-4 border-b border-gray-200 max-w-screen">
     <!-- Display the icon -->
     <!-- 0：文件夹1：视频2：音频3：图片4：文档5：压缩文件6：其他7：超链接8：图文9:微课 ,10:课件11:试题12:试卷13：虚拟仿真 14:优学院微课 -->
     <div

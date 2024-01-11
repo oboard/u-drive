@@ -26,7 +26,6 @@
     "vue-router": "^4.2.5"
   },
   "dependencies": {
-    "crypto-js": "^4.2.0",
-    "esdk-obs-browserjs": "^3.23.5"
+    "crypto-js": "^4.2.0"
   }
 }

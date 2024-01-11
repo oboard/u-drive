@@ -1,5 +1,5 @@
 <template>
-  <div v-if="listInfo" class="m-4 flex justify-between items-center">
+  <div v-if="listInfo" class="m-4 flex justify-between items-start flex-col sm:flex-row gap-2">
     <div class="flex items-center space-x-2" v-if="parentInfo">
       <div class="space-x-2">
         <!-- 返回按钮 -->
@@ -14,7 +14,7 @@
       </div>
     </div>
 
-    <div class="space-x-2">
+    <div class="gap-2 flex flex-wrap justify-start">
       <button id="btnUploadFile" class="btn" @click="handleNewFolderButton">
         <i class="i-tabler-folder-plus w-6 h-6" />
         新建文件夹
@@ -45,7 +45,7 @@ import type { ListInfo, FileInfo, UploadFileInfo } from "@/models/list_info";
 const listInfo = ref<ListInfo>();
 const parentInfo = ref<FileInfo>();
 const token = await useFetch("/api/token", { method: "GET" });
-import ObsClient from "esdk-obs-browserjs";
+import ObsClient from "@/obs/src/obs";
 
 import type ObsToken from "@/models/obs";
 // @ts-ignore
