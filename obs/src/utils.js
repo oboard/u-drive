@@ -2072,10 +2072,9 @@ Utils.prototype.makeRequest = function (methodName, opt, retryCount, bc) {
     let reopt = {
       method: method,
       // fix bug, axios will abandon the base url if the request url starts with '//', so use the completed url to avoid it
-      // url: "/proxy/" + baseUrl + path,
-      url: baseUrl + path,
+      url: "/proxy/" + baseUrl + path,
       withCredentials: false,
-      headers: { ...ex, Origin: "https://u.oboard.eu.org" },
+      headers: ex,
       validateStatus: function (status) {
         return status >= 200;
       },

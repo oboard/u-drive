@@ -1,8 +1,5 @@
 <template>
-  <div
-    v-if="listInfo"
-    class="m-4 flex justify-between items-start flex-col sm:flex-row gap-2"
-  >
+  <div v-if="listInfo" class="m-4 flex justify-between items-start flex-col sm:flex-row gap-2">
     <div class="flex items-center space-x-2" v-if="parentInfo">
       <div class="space-x-2">
         <!-- 返回按钮 -->
@@ -209,10 +206,7 @@ async function handleFileUpload(e: Event) {
       `https://courseapi.ulearning.cn/obs/uploadToken?path=resources/web/${filename}`,
       {
         method: "GET",
-        headers: {
-          Authorization: token.data.value as string,
-          Origin: "https://u.oboard.eu.org",
-        },
+        headers: { Authorization: token.data.value as string },
       }
     )) as any;
     console.log(res);
