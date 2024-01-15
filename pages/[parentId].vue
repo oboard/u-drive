@@ -1,5 +1,8 @@
 <template>
-  <div v-if="listInfo" class="m-4 flex justify-between items-start flex-col sm:flex-row gap-2">
+  <div
+    v-if="listInfo"
+    class="m-4 flex justify-between items-start flex-col sm:flex-row gap-2"
+  >
     <div class="flex items-center space-x-2" v-if="parentInfo">
       <div class="space-x-2">
         <!-- 返回按钮 -->
@@ -88,24 +91,6 @@ async function handleUploadButton() {
   // 先选择文件
   const input = document.querySelector("input[type=file]") as HTMLInputElement;
   input.click();
-}
-
-function obsSign(
-  httpMethod: string,
-  contentMd5: string,
-  contentType: string,
-  date: string,
-  acl: string,
-  res: string,
-  ak: string,
-  sk: string
-): string {
-  const signContent = `${httpMethod}\n${contentMd5}\n${contentType}\n${date}\n${acl}\n${res}`;
-  const signature = `AWS ${ak}:${CryptoJS.HmacSHA1(signContent, sk).toString(
-    CryptoJS.enc.Base64
-  )}`;
-
-  return signature;
 }
 
 onMounted(async () => {
@@ -224,7 +209,10 @@ async function handleFileUpload(e: Event) {
       `https://courseapi.ulearning.cn/obs/uploadToken?path=resources/web/${filename}`,
       {
         method: "GET",
-        headers: { Authorization: token.data.value as string },
+        headers: {
+          Authorization: token.data.value as string,
+          Origin: "https://u.oboard.eu.org",
+        },
       }
     )) as any;
     console.log(res);
