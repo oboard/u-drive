@@ -26,6 +26,9 @@
     "vue-router": "^4.2.5"
   },
   "dependencies": {
+    "@tauri-apps/cli": "^1.5.9",
+    "@vue/compiler-sfc": "^3.4.14",
+    "app": "link:@tauri-apps/api/app",
     "axios": "^1.6.5",
     "blueimp-md5": "^2.19.0",
     "crypto-js": "^4.2.0",

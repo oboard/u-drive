@@ -1,5 +1,5 @@
 <template>
-      <div data-theme="winter" class="bg-base-100">
+  <div data-theme="winter" class="bg-base-100">
     <div class="drawer">
       <input id="my-drawer-3" type="checkbox" class="drawer-toggle" />
       <div class="drawer-content flex flex-col h-screen overflow-y-hidden">
@@ -40,20 +40,28 @@
         <!-- Page content here -->
         <!-- 路由出口 -->
         <div class="w-full flex-1 overflow-y-scroll">
-          <div class="fixed w-64 min-h-screen bg-base-200 hidden lg:block border-r">
+          <div
+            class="fixed w-64 min-h-screen bg-base-200 hidden lg:block border-r"
+          >
             <ul class="menu flex flex-col pt-20">
-                <Folder :folder="{ son: rootFolder.data.value }" class="bg-base-200"/>
+              <Folder
+                :folder="{ son: rootFolder }"
+                class="bg-base-200"
+              />
             </ul>
           </div>
           <div class="flex-1 mx-4 pt-18 lg:ml-64">
-              <slot />
+            <slot />
           </div>
         </div>
       </div>
       <div class="drawer-side">
         <label for="my-drawer-3" class="drawer-overlay"></label>
         <ul class="menu w-80 bg-base-200 flex-col h-screen pt-18 z-2">
-            <Folder :folder="{ son: rootFolder.data.value }" class="bg-base-200"/>
+          <Folder
+            :folder="{ son: rootFolder }"
+            class="bg-base-200"
+          />
         </ul>
       </div>
     </div>
@@ -61,21 +69,35 @@
 </template>
 
 <script setup>
-const token = await useFetch("/api/token", { method: "GET" });
+import getToken from "@/pages/token";
+const token = await getToken();
 
-const config = {
-  headers: {
-    Authorization: token.data.value,
-  },
-};
+const rootFolder = ref({});
+// await useFetch(
+//   "https://courseapi.ulearning.cn/content/folder?viewType=0&parentId=0",
+//   {
+//     method: "GET",
+//     headers: {
+//       Authorization: token,
+//     },
+//   }
+// );
 
-const rootFolder = await useFetch(
-  "https://courseapi.ulearning.cn/content/folder?viewType=0&parentId=0",
-  {
-    method: "GET",
-    headers: config.headers,
-  }
-);
+onMounted(() => {
+  fetch(
+    "https://courseapi.ulearning.cn/content/folder?viewType=0&parentId=0",
+    {
+      method: "GET",
+      headers: {
+        Authorization: token,
+      },
+    }
+  )
+    .then((res) => res.json())
+    .then((res) => {
+      rootFolder.value = res;
+    });
+});
 </script>
 <!-- [
     {

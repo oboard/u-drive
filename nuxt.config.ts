@@ -4,6 +4,7 @@ import { presetIcons } from 'unocss'
 
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
+  ssr: false,
   devtools: { enabled: true },
   app: {
     head: {
@@ -23,7 +24,8 @@ export default defineNuxtConfig({
       // Cached for 1 hour
       '/api/*': {
         // cache: { maxAge: 1 }
-        cache: { maxAge: 60 * 60 }
+        cache: { maxAge: 60 * 60 },
+        cors: true,
       },
       '/proxy/https://**': {
         proxy: 'https://**'

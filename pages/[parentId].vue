@@ -1,5 +1,8 @@
 <template>
-  <div v-if="listInfo" class="m-4 flex justify-between items-start flex-col sm:flex-row gap-2">
+  <div
+    v-if="listInfo"
+    class="m-4 flex justify-between items-start flex-col sm:flex-row gap-2"
+  >
     <div class="flex items-center space-x-2" v-if="parentInfo">
       <div class="space-x-2">
         <!-- 返回按钮 -->
@@ -29,7 +32,7 @@
   </div>
   <div v-if="listInfo">
     <div v-for="item in listInfo.list" :key="item.contentId">
-      <FileItem :item="item" :reload="reload" :token="token.data.value" />
+      <FileItem :item="item" :reload="reload" :token="token" />
     </div>
     <div class="m-2 ml-4" v-if="listInfo?.total > 0">
       总数：{{ listInfo?.total }}
@@ -44,18 +47,17 @@
 import type { ListInfo, FileInfo, UploadFileInfo } from "@/models/list_info";
 const listInfo = ref<ListInfo>();
 const parentInfo = ref<FileInfo>();
-const token = await useFetch("/api/token", { method: "GET" });
+import getToken from "@/pages/token";
+const token = await getToken();
 import ObsClient from "@/obs/src/obs";
 
 import type ObsToken from "@/models/obs";
-// @ts-ignore
-import * as CryptoJS from "crypto-js";
 
 const fileList = ref<any[]>([]);
 
 const config = {
   headers: {
-    Authorization: token.data.value as string,
+    Authorization: token,
   },
 };
 // 获取params中的parentId
@@ -99,7 +101,7 @@ onMounted(async () => {
   //   fileTypes: [],
   //   multiple: true,
   //   uptokenHost: "https://courseapi.ulearning.cn",
-  //   authorization: token.data.value as string,
+  //   authorization: token,
   //   obsHost: "https://leicloud.ulearning.cn",
   // });
 
@@ -206,7 +208,7 @@ async function handleFileUpload(e: Event) {
       `https://courseapi.ulearning.cn/obs/uploadToken?path=resources/web/${filename}`,
       {
         method: "GET",
-        headers: { Authorization: token.data.value as string },
+        headers: { Authorization: token },
       }
     )) as any;
     console.log(res);
@@ -240,7 +242,7 @@ async function handleFileUpload(e: Event) {
 async function updateRecord(fileInfo: UploadFileInfo) {
   await fetch("https://courseapi.ulearning.cn/course/content/upload?lang=zh", {
     headers: {
-      authorization: token.data.value as string,
+      authorization: token,
       "content-type": "application/json",
     },
     method: "POST",

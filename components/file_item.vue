@@ -9,8 +9,8 @@
       :class="
         [
           'i-vscode-icons-default-folder-opened',
-          'i-vscode-icons-video',
-          'i-vscode-icons-audio',
+          'i-vscode-icons-file-type-video',
+          'i-vscode-icons-file-type-audio',
           'i-vscode-icons-file-type-image',
           'i-vscode-icons-default-file',
           'i-vscode-icons-file-type-zip',
@@ -36,9 +36,10 @@
             'zip': 'i-vscode-icons-file-type-zip',
             'rar': 'i-vscode-icons-file-type-zip',
             '7z': 'i-vscode-icons-file-type-zip',
-            'mp4': 'i-vscode-icons-video',
+            'mp4': 'i-vscode-icons-file-type-video',
             'heic': 'i-vscode-icons-file-type-image',
             'png': 'i-vscode-icons-file-type-image',
+            'mov': 'i-vscode-icons-file-type-video',
         }[item.mimeType.toLowerCase()]??'i-vscode-icons-default-file'
       "
     />
