@@ -33,7 +33,7 @@ definePageMeta({
 import { ref, computed } from 'vue';
 import { handleFileUpload } from '@/utils/uploader';
 
-const fileUrl = ref<string>('https://leicloud-huawei.obs.cn-north-4.myhuaweicloud.com/resources/web/1711508728049.png');
+const fileUrl = ref<string>('');
 const cdn = computed(() => fileUrl.value.replace('https://leicloud-huawei.obs.cn-north-4.myhuaweicloud.com', 'https://obscloud.ulearning.cn'));
 const markdown = computed(() => `![上传的图片](${fileUrl.value})`);
 const html = computed(() => `<img src="${fileUrl.value}" alt="上传的图片" />`);
