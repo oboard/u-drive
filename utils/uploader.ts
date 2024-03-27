@@ -2,7 +2,6 @@ import type ObsToken from "~/models/obs";
 import getToken from "@/pages/token";
 import ObsClient from "~/obs/src/obs";
 import type { UploadFileInfo } from "~/models/list_info";
-const token = await getToken();
 
 export function upload(
   file: File,
@@ -115,6 +114,7 @@ export async function handleFileUpload(e: Event) {
     const nodotsubfix =
       file.name.indexOf(".") == -1 ? "" : file.name.split(".").pop();
     const filename = `${timeStamp}${subfix}`;
+    const token = await getToken();
 
     const res = (await $fetch(
       `https://courseapi.ulearning.cn/obs/uploadToken?path=resources/web/${filename}`,
@@ -136,6 +136,7 @@ export async function handleFileUpload(e: Event) {
 }
 
 export async function updateRecord(fileInfo: UploadFileInfo) {
+  const token = await getToken();
   await fetch("https://courseapi.ulearning.cn/course/content/upload?lang=zh", {
     headers: {
       authorization: token,
