@@ -69,10 +69,16 @@
 </template>
 
 <script setup>
-import getToken from "@/pages/token";
+import getToken, { verified } from "@/pages/token";
 const token = await getToken();
 
 const rootFolder = ref({});
+
+const router = useRouter();
+
+if (!verified) {
+  router.push('/');
+}
 // await useFetch(
 //   "https://courseapi.ulearning.cn/content/folder?viewType=0&parentId=0",
 //   {

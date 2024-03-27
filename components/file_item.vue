@@ -3,85 +3,68 @@
   <div class="flex items-center space-x-4 p-4 border-b border-gray-200 max-w-screen">
     <!-- Display the icon -->
     <!-- 0：文件夹1：视频2：音频3：图片4：文档5：压缩文件6：其他7：超链接8：图文9:微课 ,10:课件11:试题12:试卷13：虚拟仿真 14:优学院微课 -->
-    <div
-      class="text-4xl inline-block flex-shrink-0"
-      v-if="item.contentType !== 4 && item.contentType !== 6"
-      :class="
-        [
-          'i-vscode-icons-default-folder-opened',
-          'i-vscode-icons-file-type-video',
-          'i-vscode-icons-file-type-audio',
-          'i-vscode-icons-file-type-image',
-          'i-vscode-icons-default-file',
-          'i-vscode-icons-file-type-zip',
-          'i-vscode-icons-default-file',
-          'i-vscode-icons-file-type-text',
-          'i-vscode-icons-default-file',
-        ][item.contentType]
-      "
-    />
-    <div
-      v-else
-      class="text-4xl inline-block flex-shrink-0"
-      :class="
-        {
-            'doc': 'i-vscode-icons-file-type-word',
-            'docx': 'i-vscode-icons-file-type-word',
-            'ppt': 'i-vscode-icons-file-type-powerpoint',
-            'pptx': 'i-vscode-icons-file-type-powerpoint',
-            'xls': 'i-vscode-icons-file-type-excel',
-            'xlsx': 'i-vscode-icons-file-type-excel',
-            'pdf': 'i-vscode-icons-file-type-pdf2',
-            'txt': 'i-vscode-icons-file-type-text',
-            'zip': 'i-vscode-icons-file-type-zip',
-            'rar': 'i-vscode-icons-file-type-zip',
-            '7z': 'i-vscode-icons-file-type-zip',
-            'mp4': 'i-vscode-icons-file-type-video',
-            'heic': 'i-vscode-icons-file-type-image',
-            'png': 'i-vscode-icons-file-type-image',
-            'mov': 'i-vscode-icons-file-type-video',
-        }[item.mimeType.toLowerCase()]??'i-vscode-icons-default-file'
-      "
-    />
+    <div class="text-4xl inline-block flex-shrink-0" v-if="item.contentType !== 4 && item.contentType !== 6" :class="[
+      'i-vscode-icons-default-folder-opened',
+      'i-vscode-icons-file-type-video',
+      'i-vscode-icons-file-type-audio',
+      'i-vscode-icons-file-type-image',
+      'i-vscode-icons-default-file',
+      'i-vscode-icons-file-type-zip',
+      'i-vscode-icons-default-file',
+      'i-vscode-icons-file-type-text',
+      'i-vscode-icons-default-file',
+    ][item.contentType]
+      " />
+    <div v-else class="text-4xl inline-block flex-shrink-0" :class="{
+      'doc': 'i-vscode-icons-file-type-word',
+      'docx': 'i-vscode-icons-file-type-word',
+      'ppt': 'i-vscode-icons-file-type-powerpoint',
+      'pptx': 'i-vscode-icons-file-type-powerpoint',
+      'xls': 'i-vscode-icons-file-type-excel',
+      'xlsx': 'i-vscode-icons-file-type-excel',
+      'pdf': 'i-vscode-icons-file-type-pdf2',
+      'txt': 'i-vscode-icons-file-type-text',
+      'zip': 'i-vscode-icons-file-type-zip',
+      'rar': 'i-vscode-icons-file-type-zip',
+      '7z': 'i-vscode-icons-file-type-zip',
+      'mp4': 'i-vscode-icons-file-type-video',
+      'heic': 'i-vscode-icons-file-type-image',
+      'png': 'i-vscode-icons-file-type-image',
+      'mov': 'i-vscode-icons-file-type-video',
+    }[item.mimeType.toLowerCase()] ?? 'i-vscode-icons-default-file'
+      " />
 
     <!-- Display file information -->
     <div class="flex-1">
-      <NuxtLink
-        class="link link-neutral link-hover"
-        :to="item.type === 3 ? item.contentId.toString() : undefined"
-        >{{ item.title }}</NuxtLink
-      >
+      <div class="flex flex-col">
+        <NuxtLink class="link link-neutral link-hover" :to="item.type === 3 ? (item.contentId.toString()) : item.location">
+          {{ item.title }}
+        </NuxtLink>
+        <!-- <NuxtLink v-if="item.type === 1" class="text-sm text-ellipsis flex-inline flex-row link link-hover"
+          :to="item.location">
+          {{ item.location }}
+        </NuxtLink> -->
+        <!-- createDate -->
+        <div class="text-gray-500 text-sm">
+          {{ new Date(item.createDate).toLocaleString() }}
+        </div>
+
+      </div>
       <div v-if="item.type === 1" class="text-gray-500 text-sm">
         {{ item.remark }}
       </div>
     </div>
-    <!-- createDate -->
-    <div class="text-gray-500 text-sm">
-      {{ new Date(item.createDate).toLocaleString() }}
-    </div>
-
     <!-- actions -->
-    <div>
+    <div class="shrink-0 min-w-16">
       <div class="dropdown dropdown-bottom dropdown-end block sm:hidden">
         <div tabindex="0" role="button" class="btn p-0 btn-circle">
           <i class="i-carbon-overflow-menu-horizontal w-6 h-6" />
         </div>
-        <ul
-          tabindex="0"
-          class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52"
-        >
-          <li
-            v-for="action in actions"
-            :key="action.name"
-            v-show="!action.showTypes || action.showTypes.includes(item.type)"
-          >
-            <a
-              tabindex="0"
-              role="button"
-              :class="action.class"
-              class="flex items-center space-x-2 p-2 rounded-md hover:bg-base-200"
-              @click="action.action"
-            >
+        <ul tabindex="0" class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
+          <li v-for="action in actions" :key="action.name"
+            v-show="!action.showTypes || action.showTypes.includes(item.type)">
+            <a tabindex="0" role="button" :class="action.class"
+              class="flex items-center space-x-2 p-2 rounded-md hover:bg-base-200" @click="action.action">
               <i :class="action.icon" class="w-6 h-6" />
               <span>{{ action.name }}</span>
             </a>
@@ -90,14 +73,8 @@
       </div>
       <div class="hidden sm:block">
         <div class="flex items-center space-x-2">
-          <button
-            tabindex="0"
-            class="btn"
-            :class="action.class"
-            v-for="action in actions"
-            :key="action.name"
-            @click="action.action"
-          >
+          <button tabindex="0" class="btn" :class="action.class" v-for="action in actions" :key="action.name"
+            @click="action.action">
             <i :class="action.icon" class="w-6 h-6" />
             <span class="hidden sm:block">{{ action.name }}</span>
           </button>
@@ -136,6 +113,18 @@ const actions = [
       // 下载 item.location 中的文件
       window.open(props.item.location);
     },
+  },
+  {
+    name: "复制链接",
+    icon: "i-tabler-link",
+    showTypes: [1],
+    class: "",
+    action: () => {
+      // 复制链接
+      navigator.clipboard.writeText(props.item.location).then(() => {
+        alert("已复制到剪贴板");
+      });
+    }
   },
   {
     name: "重命名",

@@ -1,6 +1,6 @@
 <template>
   <!-- {{ parentId }} -->
-  <ul class="menu max-w-xs w-full m-1 p-0">
+  <ul class="menu max-w-xs w-full m-1 p-0" v-if="verified">
     <li v-if="folder" v-for="item in folder.son" :key="item?.id">
       <details open v-if="item.son.length > 0">
         <summary
@@ -60,6 +60,7 @@
 
 <script lang="ts" setup>
 import type Folder from "~/models/folder";
+import { verified } from "~/pages/token";
 const currentId = ref();
 
 const route = useRoute();
