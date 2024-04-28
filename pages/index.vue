@@ -3,7 +3,8 @@
   <div class="flex flex-col items-center justify-center h-screen">
     <div class="text-4xl font-bold">Welcome to U-Drive</div>
     <!-- 输入密码 -->
-    <input v-model="password" type="password" class="mt-4 input input-primary" placeholder="Password" />
+    <input v-model="password" type="password" class="mt-4 input input-primary" placeholder="Password"
+      @keydown.enter="verify ? $router.push('/dir/0') : null" />
     <!-- 进入按钮，跳转到dir/0 -->
     <nuxt-link v-if="verify" to="/dir/0" class="mt-4 btn btn-primary rounded-md">
       Enter

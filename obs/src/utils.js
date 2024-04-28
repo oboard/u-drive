@@ -1478,6 +1478,8 @@ Utils.prototype.makeParam = function (methodName, param) {
     this.server +
     (this.port === 80 || this.port === 443 ? "" : ":" + this.port);
 
+  exheaders.Origin = "https://homework.ulearning.cn";
+
   if (!this.pathStyle && !this.isCname) {
     let uriList = uri.split("/");
     if (uriList.length >= 2 && uriList[1]) {

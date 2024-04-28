@@ -4,23 +4,13 @@
       <input id="my-drawer-3" type="checkbox" class="drawer-toggle" />
       <div class="drawer-content flex flex-col h-screen overflow-y-hidden">
         <!-- Navbar -->
-        <div
-          class="w-full navbar fixed z-10 bg-base-100 shadow shadow-gray-200 dark:shadow-gray-900"
-        >
+        <div class="w-full navbar fixed z-10 bg-base-100 shadow shadow-gray-200 dark:shadow-gray-900">
           <div class="flex-none lg:hidden">
             <label for="my-drawer-3" class="btn btn-square btn-ghost">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                class="inline-block w-6 h-6 stroke-current"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M4 6h16M4 12h16M4 18h16"
-                ></path>
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                class="inline-block w-6 h-6 stroke-current">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16">
+                </path>
               </svg>
             </label>
           </div>
@@ -40,14 +30,9 @@
         <!-- Page content here -->
         <!-- 路由出口 -->
         <div class="w-full flex-1 overflow-y-scroll">
-          <div
-            class="fixed w-64 min-h-screen bg-base-200 hidden lg:block border-r"
-          >
-            <ul class="menu flex flex-col pt-20">
-              <Folder
-                :folder="{ son: rootFolder }"
-                class="bg-base-200"
-              />
+          <div class="fixed w-64 min-h-screen bg-base-200 hidden lg:block border-r overflow-hidden">
+            <ul class="flex flex-col pt-20">
+              <Folder :folder="{ son: rootFolder }" class="bg-base-200" />
             </ul>
           </div>
           <div class="flex-1 mx-4 pt-18 lg:ml-64">
@@ -57,11 +42,8 @@
       </div>
       <div class="drawer-side">
         <label for="my-drawer-3" class="drawer-overlay"></label>
-        <ul class="menu w-80 bg-base-200 flex-col h-screen pt-18 z-2">
-          <Folder
-            :folder="{ son: rootFolder }"
-            class="bg-base-200"
-          />
+        <ul class="w-80 bg-base-200 flex-col h-screen pt-18 z-2 overflow-hidden">
+          <Folder :folder="{ son: rootFolder }" class="bg-base-200" />
         </ul>
       </div>
     </div>
