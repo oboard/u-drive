@@ -1,6 +1,6 @@
 <template>
   <!-- {{ parentId }} -->
-  <ul class="max-w-xs w-full m-1 p-0" v-if="verified">
+  <ul class="max-w-xs w-full m-1 p-2 space-y-1" v-if="verified">
     <li v-if="folder" v-for="item in folder.son" :key="item?.id">
       <!-- <details open v-if="item.son.length > 0">
         <summary class="rounded transition-all duration-300 ease-out-cubic px-4" :class="{

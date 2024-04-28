@@ -29,13 +29,13 @@
         </div>
         <!-- Page content here -->
         <!-- 路由出口 -->
-        <div class="w-full flex-1 overflow-y-scroll">
-          <div class="fixed w-64 min-h-screen bg-base-200 hidden lg:block border-r overflow-hidden">
-            <ul class="flex flex-col pt-20">
+        <div class="w-full flex-1 h-full pt-16">
+          <div class="absolute top-16 bottom-0 left-0 w-64 bg-base-200 hidden lg:block border-r overflow-y-scroll overflow-x-hidden">
+            <ul class="flex flex-col">
               <Folder :folder="{ son: rootFolder }" class="bg-base-200" />
             </ul>
           </div>
-          <div class="flex-1 mx-4 pt-18 lg:ml-64">
+          <div class="flex-1 px-4 lg:ml-64 h-full overflow-y-scroll overflow-x-hidden">
             <slot />
           </div>
         </div>

@@ -29,6 +29,7 @@
       '7z': 'i-vscode-icons-file-type-zip',
       'mp4': 'i-vscode-icons-file-type-video',
       'heic': 'i-vscode-icons-file-type-image',
+      'webp': 'i-vscode-icons-file-type-image',
       'png': 'i-vscode-icons-file-type-image',
       'mov': 'i-vscode-icons-file-type-video',
     }[item.mimeType.toLowerCase()] ?? 'i-vscode-icons-default-file'
