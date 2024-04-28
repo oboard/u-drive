@@ -38,7 +38,6 @@ const cdn = computed(() => fileUrl.value.replace('https://leicloud-huawei.obs.cn
 const markdown = computed(() => `![上传的图片](${fileUrl.value})`);
 const html = computed(() => `<img src="${fileUrl.value}" alt="上传的图片" />`);
 
-
 async function handleUploadButton() {
     // 先选择文件
     const input = document.querySelector("input[type=file]") as HTMLInputElement;

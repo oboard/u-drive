@@ -25,7 +25,8 @@
   </div>
   <div v-if="listInfo">
     <div v-for="item in listInfo.list" :key="item.contentId">
-      <FileItem :item="item" :reload="reload" :token="token" />
+      <FileItem :item="item" :reload="reload" :token="token" :customConfirm="customConfirm"
+        :customPrompt="customPrompt" />
     </div>
     <div class="m-2 ml-4" v-if="listInfo?.total > 0">
       总数：{{ listInfo?.total }}
@@ -39,43 +40,30 @@
     <span>加载中……</span>
     <!-- <span>网络异常，请稍后重试</span> -->
   </div>
-  <Modal ref="promptModal" :title="modalTitle" :actions="[
-    {
-      name: '确定',
-      action: () => {
-        console.log('确定');
-      },
-    },
-    {
-      name: '取消',
-      action: () => {
-        console.log('取消');
-      },
-    },
-  ]">
-    <div class="flex flex-col gap-2">
-      <div class="flex items-center gap-2">
-        <label for="folderName">{{ modalTitle }}</label>
-        <input type="text" id="folderName" v-model="modalInput" class="input input-primary" />
-      </div>
-    </div>
+  <Modal v-model="promptModal" :title="modalTitle" @confirm="promptConfrim" @cancel="promptCancel">
+    <input ref="inputRef" type="text" id="folderName" v-model="modalInput" class="input input-bordered w-full mt-4"
+      @keydown.enter="promptConfrim" :placeholder="modalTitle" />
+  </Modal>
+  <Modal v-model="confirmModal" :title="modalTitle" @confirm="promptConfrim" @cancel="promptCancel">
   </Modal>
 </template>
 
 <script lang="ts" setup>
-import type { ListInfo, FileInfo, UploadFileInfo } from "@/models/list_info";
+import type { ListInfo, FileInfo } from "@/models/list_info";
 const listInfo = ref<ListInfo>();
 const parentInfo = ref<FileInfo>();
 import getToken from "@/pages/token";
 const token = await getToken();
-import ObsClient from "@/obs/src/obs";
 import { handleFileUpload, updateRecord } from '@/utils/uploader';
 
-import type ObsToken from "@/models/obs";
-
 const modalTitle = ref<string>("");
-const promptModal = ref<HTMLDialogElement>();
+const promptModal = ref<boolean>(false);
+const confirmModal = ref<boolean>(false);
 const modalInput = ref<string>("");
+const promptConfrim = ref<() => void>();
+const promptCancel = ref<() => void>();
+
+const inputRef = ref<HTMLInputElement>();
 
 const fileList = ref<any[]>([]);
 
@@ -120,21 +108,36 @@ onMounted(async () => {
   await reload();
 });
 
-async function customPrompt(message: string) {
+async function customConfirm(message: string): Promise<boolean> {
   modalTitle.value = message;
-  console.log(promptModal.value);
-  promptModal.value?.showModal();
-  return new Promise<string>((resolve, reject) => {
-    const okButton = promptModal.value?.querySelectorAll("button")[0];
-    const cancelButton = promptModal.value?.querySelectorAll("button")[1];
-    okButton?.addEventListener("click", () => {
-      promptModal.value?.close();
+  confirmModal.value = true;
+  return new Promise((resolve) => {
+    promptConfrim.value = () => {
+      resolve(true);
+      confirmModal.value = false;
+    }
+    promptCancel.value = () => {
+      resolve(false);
+      confirmModal.value = false;
+    }
+  });
+}
+
+async function customPrompt(message: string, defaultValue?: string): Promise<string | undefined> {
+  modalTitle.value = message;
+  modalInput.value = defaultValue ?? "";
+  promptModal.value = true;
+  // inputRef获取焦点
+  inputRef.value?.focus();
+  return new Promise((resolve) => {
+    promptConfrim.value = () => {
       resolve(modalInput.value);
-    });
-    cancelButton?.addEventListener("click", () => {
-      promptModal.value?.close();
-      reject();
-    });
+      promptModal.value = false;
+    };
+    promptCancel.value = () => {
+      resolve(undefined);
+      promptModal.value = false;
+    };
   });
 }
 

@@ -1,16 +1,19 @@
 <template>
-  <dialog class="modal modal-bottom sm:modal-middle">
+  <dialog class="modal" :class="{
+    'modal-open': open,
+  }">
     <div class="modal-box">
       <h3 class="font-bold text-lg">{{ title }}</h3>
       <slot></slot>
       <div class="modal-action">
-        <form method="dialog">
-          <!-- <button class="btn">确定</button> -->
-          <div v-for="action in actions">
-            <button class="btn" :class="action.class" @click="action.action">
-              {{ action.name }}
-            </button>
-          </div>
+        <form method="dialog" class="inline-flex gap-2" @submit="open = false">
+          <button class="btn" @click="emit('cancel', $event)">
+            取消
+          </button>
+
+          <button class="btn" @click="emit('confirm', $event)">
+            确定
+          </button>
         </form>
       </div>
     </div>
@@ -18,29 +21,16 @@
 </template>
 
 <script lang="ts" setup>
+const emit = defineEmits(['confirm', 'cancel']);
+
+const open = defineModel<boolean>({
+  required: true
+});
 defineProps({
   title: {
     type: String,
     required: false,
-    default: "提示",
-  },
-  actions: {
-    type: Array as PropType<
-      {
-        name: string;
-        class?: string;
-        action: () => void;
-      }[]
-    >,
-    required: false,
-    default: () => [
-      {
-        name: "确定",
-        action: () => {
-          console.log("确定");
-        },
-      },
-    ],
+    default: "提示"
   },
 });
 </script>

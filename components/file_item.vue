@@ -37,7 +37,8 @@
     <!-- Display file information -->
     <div class="flex-1">
       <div class="flex flex-col">
-        <NuxtLink class="link link-neutral link-hover" :to="item.type === 3 ? (item.contentId.toString()) : item.location">
+        <NuxtLink class="link link-neutral link-hover"
+          :to="item.type === 3 ? (item.contentId.toString()) : item.location">
           {{ item.title }}
         </NuxtLink>
         <!-- <NuxtLink v-if="item.type === 1" class="text-sm text-ellipsis flex-inline flex-row link link-hover"
@@ -73,10 +74,10 @@
       </div>
       <div class="hidden sm:block">
         <div class="flex items-center space-x-2">
-          <button tabindex="0" class="btn" :class="action.class" v-for="action in actions" :key="action.name"
-            @click="action.action">
+          <button tabindex="0" class="btn btn-circle" v-show="!action.showTypes || action.showTypes.includes(item.type)"
+            :class="action.class" v-for="action in actions" :key="action.name" @click="action.action">
             <i :class="action.icon" class="w-6 h-6" />
-            <span class="hidden sm:block">{{ action.name }}</span>
+            <!-- <span class="hidden sm:block">{{ action.name }}</span> -->
           </button>
         </div>
       </div>
@@ -101,6 +102,14 @@ const props = defineProps({
     type: Function as PropType<() => void>,
     required: true,
   },
+  customConfirm: {
+    type: Function as PropType<(message: string) => Promise<boolean>>,
+    required: true,
+  },
+  customPrompt: {
+    type: Function as PropType<(message: string, defaultValue?: string) => Promise<string | undefined>>,
+    required: true,
+  },
 });
 
 const actions = [
@@ -110,8 +119,19 @@ const actions = [
     showTypes: [1],
     class: "",
     action: () => {
-      // 下载 item.location 中的文件
-      window.open(props.item.location);
+      props.customConfirm("是否下载文件？").then((confirm) => {
+        if (confirm) {
+          // 下载文件
+          // 如果是tauri
+          // @ts-ignore
+          if (typeof window.navigator.tauri !== "undefined") {
+            // @ts-ignore
+            window.navigator.tauri.downloadFile(props.item.location);
+          } else {
+            window.open(props.item.location);
+          }
+        }
+      });
     },
   },
   {
@@ -130,9 +150,9 @@ const actions = [
     name: "重命名",
     icon: "i-tabler-edit",
     class: "",
-    action: () => {
+    action: async () => {
       // 重命名
-      const newName = prompt("请输入新的文件名", props.item.title);
+      const newName = await props.customPrompt("请输入新的文件名", props.item.title);
       if (newName) {
         props.item.title = newName;
         fetch("https://courseapi.ulearning.cn/course/content/upload?lang=zh", {
@@ -156,21 +176,26 @@ const actions = [
     icon: "i-tabler-trash",
     class: "text-red-500 hover:text-red-800",
     action: () => {
-      fetch(
-        "https://courseapi.ulearning.cn/content/delete?_method=DELETE&lang=zh",
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Referer: "https://courseweb.ulearning.cn/ulearning/index.html",
-            Authorization: props.token,
-          },
-          body: JSON.stringify([props.item.contentId]),
-          method: "DELETE",
+      props.customConfirm("是否删除？").then((confirm) => {
+        if (confirm) {
+          // 删除文件
+          fetch(
+            "https://courseapi.ulearning.cn/content/delete?_method=DELETE&lang=zh",
+            {
+              headers: {
+                "Content-Type": "application/json",
+                Referer: "https://courseweb.ulearning.cn/ulearning/index.html",
+                Authorization: props.token,
+              },
+              body: JSON.stringify([props.item.contentId]),
+              method: "DELETE",
+            }
+          ).then(() =>
+            // 重新获取文件夹信息
+            props.reload()
+          );
         }
-      ).then(() =>
-        // 重新获取文件夹信息
-        props.reload()
-      );
+      });
     },
   },
 ];
